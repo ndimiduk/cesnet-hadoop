@@ -4,6 +4,24 @@
 # It ensure the service is running.
 #
 class hadoop::namenode::service {
+
+  # HDP packages don't provide service scripts o.O
+  file {'/etc/init/hadoop-hdfs-namenode.conf':
+    ensure  => file,
+    content => template('hadoop/services/hadoop-hdfs-namenode.conf.erb'),
+    mode    => '0644',
+    owner   => root,
+    group   => root,
+  }
+
+  # HDP packages don't create log or run dirs
+  file { $hadoop::hdfs_log_dir:
+    ensure => directory,
+    mode   => '0644',
+    owner  => $hadoop::hdfs_user,
+    group  => 'hadoop',
+  }
+
   # don't launch namenode(s) during the first "stage" (requires formatting
   # which requires journal nodes)
   if $hadoop::zookeeper_deployed {

@@ -197,7 +197,7 @@ class hadoop::params {
   # other properties added to init.pp
   case "${::osfamily}-${::operatingsystem}" {
     /RedHat-Fedora/: {
-      $properties = {
+      $props = {
         'yarn.nodemanager.local-dirs' => "${yarn_homedir}/\${user.name}/nm-local-dir",
         'yarn.application.classpath' => '
         $HADOOP_CONF_DIR,$HADOOP_COMMON_HOME/$HADOOP_COMMON_DIR/*,
@@ -210,7 +210,7 @@ class hadoop::params {
       }
     }
     /Debian|RedHat/: {
-      $properties = {
+      $props = {
         'yarn.nodemanager.local-dirs' => "${yarn_homedir}/cache/\${user.name}/nm-local-dir",
         'yarn.application.classpath' => '
         $HADOOP_CONF_DIR,
@@ -226,6 +226,29 @@ class hadoop::params {
     }
   }
 
+  # distributed cache deploy of MR2, https://hadoop.apache.org/docs/r2.7.2/hadoop-mapreduce-client/hadoop-mapreduce-client-core/DistributedCacheDeploy.html
+  # extra stuff for HDP, http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.4/bk_installing_manually_book/content/configure_yarn_and_mapreduce.html
+  # docs linked above are wrong re: yarn.application.classpath. s/${hdp.version/current/
+  $properties = merge($props, {
+    'mapreduce.admin.map.child.java.opts' => '-server -Djava.net.preferIPv4Stack=true -Dhdp.version=${hdp.version}',
+    'mapreduce.admin.user.env' => 'LD_LIBRARY_PATH=/usr/hdp/${hdp.version}/hadoop/lib/native:/usr/hdp/${hdp.version}/hadoop/lib/native/Linux-amd64-64',
+    'mapreduce.application.framework.path' => '/hdp/apps/${hdp.version}/mapreduce/mapreduce.tar.gz#mr-framework',
+    'mapreduce.application.classpath' => '$PWD/mr-framework/hadoop/share/hadoop/mapreduce/*:
+$PWD/mr-framework/hadoop/share/hadoop/mapreduce/lib/*:
+$PWD/mr-framework/hadoop/share/hadoop/common/*:
+$PWD/mr-framework/hadoop/share/hadoop/common/lib/*:
+$PWD/mr-framework/hadoop/share/hadoop/yarn/*:
+$PWD/mr-framework/hadoop/share/hadoop/yarn/lib/*:
+$PWD/mr-framework/hadoop/share/hadoop/hdfs/*:
+$PWD/mr-framework/hadoop/share/hadoop/hdfs/lib/*:/usr/hdp/${hdp.version}/hadoop/lib/hadoop-lzo-0.6.0.${hdp.version}.jar:/etc/hadoop/conf/secure',
+    'yarn.application.classpath' => '$HADOOP_CONF_DIR,/usr/hdp/current/hadoop-client/*,
+/usr/hdp/current/hadoop-client/lib/*,
+/usr/hdp/current/hadoop-hdfs-client/*,
+/usr/hdp/current/hadoop-hdfs-client/lib/*,
+/usr/hdp/current/hadoop-yarn-client/*,
+/usr/hdp/current/hadoop-yarn-client/lib/*',
+  })
+
   $perform = false
   $hdfs_deployed = true
   $zookeeper_deployed = true
@@ -238,4 +261,13 @@ class hadoop::params {
   $keytab_resourcemanager = '/etc/security/keytab/rm.service.keytab'
   $keytab_nodemanager = '/etc/security/keytab/nm.service.keytab'
   $keytab_nfs = '/etc/security/keytab/nfs.service.keytab'
+
+  $hdfs_user = 'hdfs'
+  $yarn_user = 'yarn'
+  $mapreduce_user = 'mapred'
+
+  $_log_base = '/var/log/hadoop'
+  $hdfs_log_dir = "${_log_base}/${hdfs_user}"
+  $yarn_log_dir = "${_log_base}/${yarn_user}"
+  $mapred_log_dir = "${_log_base}/${mapreduce_user}"
 }

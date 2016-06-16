@@ -11,6 +11,30 @@ class hadoop::common::config {
     content => template('hadoop/hadoop/core-site.xml.erb'),
   }
 
+  file { "${hadoop::confdir}/hadoop-env.sh":
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    alias   => 'hadoop-env.sh',
+    content => template('hadoop/hadoop/hadoop-env.sh.erb'),
+  }
+
+  file { "${hadoop::confdir}/yarn-env.sh":
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    alias   => 'yarn-env.sh',
+    content => template('hadoop/hadoop/yarn-env.sh.erb'),
+  }
+
+  file { "${hadoop::confdir}/capacity-scheduler.xml":
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    alias   => 'capacity-scheduler.xml',
+    content => template('hadoop/hadoop/capacity-scheduler.xml.erb'),
+  }
+
   $environment = $hadoop::environment
   $env_common = $hadoop::envs['common']
   augeas{ $env_common:

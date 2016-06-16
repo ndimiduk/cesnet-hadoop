@@ -4,6 +4,24 @@
 # It ensure the services are running.
 #
 class hadoop::resourcemanager::service {
+
+  # HDP packages don't provide service scripts o.O
+  file {'/etc/init/hadoop-yarn-resourcemanager.conf':
+    ensure  => file,
+    content => template('hadoop/services/hadoop-yarn-resourcemanager.conf.erb'),
+    mode    => '0644',
+    owner   => root,
+    group   => root,
+  }
+
+  # HDP packages don't create log or run dirs
+  file { $hadoop::yarn_log_dir:
+    ensure => directory,
+    mode   => '0644',
+    owner  => $hadoop::yarn_user,
+    group  => 'hadoop',
+  }
+
   if $hadoop::zookeeper_deployed {
     service { $hadoop::daemons['resourcemanager']:
       ensure    => 'running',

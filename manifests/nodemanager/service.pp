@@ -5,6 +5,16 @@
 # It works OK automatically when using from parent hadoop::service class.
 #
 class hadoop::nodemanager::service {
+
+  # HDP packages don't provide service scripts o.O
+  file {'/etc/init/hadoop-yarn-nodemanager.conf':
+    ensure  => file,
+    content => template('hadoop/services/hadoop-yarn-nodemanager.conf.erb'),
+    mode    => '0644',
+    owner   => root,
+    group   => root,
+  }
+
   if $hadoop::zookeeper_deployed {
     service { $hadoop::daemons['nodemanager']:
       ensure    => 'running',
