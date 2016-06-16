@@ -32,6 +32,14 @@ class hadoop::common::yarn::config {
     require => [ Exec['touch-excludes'], File[$file_slaves] ],
   }
 
+  file { "${hadoop::confdir}/capacity-scheduler.xml":
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    alias   => 'capacity-scheduler.xml',
+    content => template('hadoop/hadoop/capacity-scheduler.xml.erb'),
+  }
+
   # slaves needs Hadoop configuration directory
   Class['hadoop::common::install'] -> Class['hadoop::common::slaves']
 }

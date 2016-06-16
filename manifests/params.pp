@@ -133,6 +133,19 @@ class hadoop::params {
     'yarn.application.classpath' => 'Classpath for typical applications.',
     'yarn.resourcemanager.nodes.include-path' => 'permitted nodes',
     'yarn.resourcemanager.nodes.exclude-path' => 'decommissioning of the nodes',
+    'yarn.scheduler.capacity.maximum-applications' => 'Maximum number of applications that can be pending and running.',
+    'yarn.scheduler.capacity.maximum-am-resource-percent' => 'Maximum percent of resources in the cluster which can be used to run application masters i.e. controls number of concurrent running applications.',
+    'yarn.scheduler.capacity.resource-calculator' => 'The ResourceCalculator implementation to be used to compare Resources in the scheduler.',
+    'yarn.scheduler.capacity.root.queues' => 'The queues at the this level (root is the root queue).',
+    'yarn.scheduler.capacity.root.default.capacity' => 'Default queue target capacity.',
+    'yarn.scheduler.capacity.root.default.user-limit-factor' => 'Default queue user limit a percentage from 0.0 to 1.0.',
+    'yarn.scheduler.capacity.root.default.maximum-capacity' => 'The maximum capacity of the default queue.',
+    'yarn.scheduler.capacity.root.default.state' => 'The state of the default queue. State can be one of RUNNING or STOPPED.',
+    'yarn.scheduler.capacity.root.default.acl_submit_applications' => 'The ACL of who can submit jobs to the default queue.',
+    'yarn.scheduler.capacity.root.default.acl_administer_queue' => 'The ACL of who can administer jobs on the default queue.',
+    'yarn.scheduler.capacity.node-locality-delay' => 'Number of missed scheduling opportunities after which the CapacityScheduler attempts to schedule rack-local containers. Typically this should be set to number of nodes in the cluster, By default is setting approximately number of nodes in one rack which is 40.',
+    'yarn.scheduler.capacity.queue-mappings' => 'A list of mappings that will be used to assign jobs to queues The syntax for this list is [u|g]:[name]:[queue_name][,next mapping]* Typically this list will be used to map users to queues, for example, u:%user:%user maps all users to queues with the same name as the user.',
+    'yarn.scheduler.capacity.queue-mappings-override.enable' => 'If a queue mapping is present, will it override the value specified by the user? This can be used by administrators to place jobs in queues that are different than the one specified by the user. The default is false.',
   }
   $features = {
   }

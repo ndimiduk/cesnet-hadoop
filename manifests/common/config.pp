@@ -27,14 +27,6 @@ class hadoop::common::config {
     content => template('hadoop/hadoop/yarn-env.sh.erb'),
   }
 
-  file { "${hadoop::confdir}/capacity-scheduler.xml":
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    alias   => 'capacity-scheduler.xml',
-    content => template('hadoop/hadoop/capacity-scheduler.xml.erb'),
-  }
-
   $environment = $hadoop::environment
   $env_common = $hadoop::envs['common']
   augeas{ $env_common:

@@ -462,7 +462,24 @@ DEFAULT
     $preset_authorization = {}
   }
 
-  $props = merge($::hadoop::params::properties, $dyn_properties, $sec_properties, $auth_properties, $rm_ss_properties, $mh_properties, $agg_properties, $compress_properties, $https_properties, $impala_properties, $scratch_properties, $ha_properties, $zoo_properties, $nfs_properties, $properties)
+  # duplicate default values from capacity-scheduler.xml because bleh.
+  $capacity_properties = {
+    'yarn.scheduler.capacity.maximum-applications' => 10000,
+    'yarn.scheduler.capacity.maximum-am-resource-percent' => 0.1,
+    'yarn.scheduler.capacity.resource-calculator' => 'org.apache.hadoop.yarn.util.resource.DefaultResourceCalculator',
+    'yarn.scheduler.capacity.root.queues' => 'default',
+    'yarn.scheduler.capacity.root.default.capacity' => 100,
+    'yarn.scheduler.capacity.root.default.user-limit-factor' => 1,
+    'yarn.scheduler.capacity.root.default.maximum-capacity' => 100,
+    'yarn.scheduler.capacity.root.default.state' => 'RUNNING',
+    'yarn.scheduler.capacity.root.default.acl_submit_applications' => '*',
+    'yarn.scheduler.capacity.root.default.acl_administer_queue' => '*',
+    'yarn.scheduler.capacity.node-locality-delay' => 40,
+    'yarn.scheduler.capacity.queue-mappings' => '',
+    'yarn.scheduler.capacity.queue-mappings-override.enable' => false,
+  }
+
+  $props = merge($::hadoop::params::properties, $dyn_properties, $sec_properties, $auth_properties, $rm_ss_properties, $mh_properties, $agg_properties, $compress_properties, $https_properties, $impala_properties, $scratch_properties, $ha_properties, $zoo_properties, $nfs_properties, $capacity_properties, $properties)
   $descs = merge($::hadoop::params::descriptions, $descriptions)
 
   $_authorization = merge($preset_authorization, delete($authorization, 'rules'))
