@@ -19,6 +19,7 @@ class hadoop::nodemanager::service {
     service { $hadoop::daemons['nodemanager']:
       ensure    => 'running',
       enable    => true,
+      require   => File[$hadoop::yarn_log_dir],
       subscribe => [File['core-site.xml'], File['yarn-site.xml']],
     }
 

@@ -25,6 +25,7 @@ class hadoop::datanode::service {
     service { $hadoop::daemons['datanode']:
       ensure    => 'running',
       enable    => true,
+      require  => File[$hadoop::hdfs_log_dir],
       subscribe => [File['core-site.xml'], File['hdfs-site.xml']],
     }
 
@@ -36,6 +37,7 @@ class hadoop::datanode::service {
     service { $hadoop::daemons['datanode']:
       ensure => 'stopped',
       enable => true,
+      require  => File[$hadoop::hdfs_log_dir],
     }
   }
 }

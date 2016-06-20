@@ -16,19 +16,12 @@ class hadoop::historyserver::service {
     group   => root,
   }
 
-  # HDP packages don't create log or run dirs
-  file { $hadoop::mapred_log_dir:
-    ensure => directory,
-    mode   => '0644',
-    owner  => $hadoop::mapreduce_user,
-    group  => 'hadoop',
-  }
-
   # history server requires working HDFS
   if $hadoop::hdfs_deployed {
     service { $hadoop::daemons['historyserver']:
       ensure    => 'running',
       enable    => true,
+      require  => File[$hadoop::mapred_log_dir],
       subscribe => [File['core-site.xml'], File['yarn-site.xml']],
     }
 
@@ -40,8 +33,9 @@ class hadoop::historyserver::service {
     }
   } else {
     service { $hadoop::daemons['historyserver']:
-      ensure => 'stopped',
-      enable => true,
+      ensure  => 'stopped',
+      enable  => true,
+      require => File[$hadoop::mapred_log_dir],
     }
   }
 }

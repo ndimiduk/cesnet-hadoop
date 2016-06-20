@@ -16,6 +16,7 @@ class hadoop::journalnode::service {
   service { $hadoop::daemons['journalnode']:
     ensure    => 'running',
     enable    => true,
+    require   => File[$hadoop::hdfs_log_dir],
     subscribe => [File['core-site.xml'], File['hdfs-site.xml']],
   }
 }

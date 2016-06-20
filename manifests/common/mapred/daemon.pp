@@ -4,6 +4,14 @@
 #
 class hadoop::common::mapred::daemon {
 
+ # HDP packages don't create log or run dirs
+ file { $hadoop::mapred_log_dir:
+    ensure => directory,
+    mode   => '0644',
+    owner  => $hadoop::mapreduce_user,
+    group  => 'hadoop',
+  }
+
   hadoop::mkdir { '/hdp':
     touchfile => 'mapred-distcache-installed',
     owner     => 'hdfs',

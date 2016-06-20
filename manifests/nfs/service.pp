@@ -13,14 +13,16 @@ class hadoop::nfs::service {
     service { $hadoop::daemons['nfs']:
       ensure    => running,
       enable    => true,
+      require   => File[$hadoop::hdfs_log_dir],
       subscribe => [File['core-site.xml'], File['hdfs-site.xml']],
     }
 
     if $hadoop::daemons['portmap'] {
       service { $hadoop::daemons['portmap']:
-        ensure => running,
-        enable => true,
-        before => Service[$hadoop::daemons['nfs']],
+        ensure  => running,
+        enable  => true,
+        require => File[$hadoop::hdfs_log_dir],
+        before  => Service[$hadoop::daemons['nfs']],
       }
     }
 

@@ -14,18 +14,11 @@ class hadoop::resourcemanager::service {
     group   => root,
   }
 
-  # HDP packages don't create log or run dirs
-  file { $hadoop::yarn_log_dir:
-    ensure => directory,
-    mode   => '0644',
-    owner  => $hadoop::yarn_user,
-    group  => 'hadoop',
-  }
-
   if $hadoop::zookeeper_deployed {
     service { $hadoop::daemons['resourcemanager']:
       ensure    => 'running',
       enable    => true,
+      require   => File[$hadoop::yarn_log_dir],
       subscribe => [File['core-site.xml'], File['yarn-site.xml']],
     }
 

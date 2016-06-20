@@ -3,6 +3,15 @@
 # HDFS specific setup. Called from namenode and datanode classes.
 #
 class hadoop::common::hdfs::daemon {
+
+  # HDP packages don't create log or run dirs
+  file { $hadoop::hdfs_log_dir:
+    ensure => directory,
+    mode   => '0644',
+    owner  => $hadoop::hdfs_user,
+    group  => 'hadoop',
+  }
+
   if $hadoop::https {
     file { "${hadoop::hdfs_homedir}/hadoop.keytab":
       owner  => 'hdfs',

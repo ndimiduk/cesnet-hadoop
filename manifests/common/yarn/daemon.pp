@@ -3,6 +3,15 @@
 # YARN specific setup. Called from resourcemanager and nodemanager classes.
 #
 class hadoop::common::yarn::daemon {
+
+  # HDP packages don't create log or run dirs
+  file { $hadoop::yarn_log_dir:
+    ensure => directory,
+    mode   => '0644',
+    owner  => $hadoop::yarn_user,
+    group  => 'hadoop',
+  }
+
   if $hadoop::https {
     file { "${hadoop::yarn_homedir}/hadoop.keytab":
       owner  => 'yarn',
