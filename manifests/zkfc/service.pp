@@ -6,9 +6,20 @@
 class hadoop::zkfc::service {
   # zkfc requires working zookeeper first
   if $hadoop::zookeeper_deployed {
+
+    # HDP packages don't provide service scripts o.O
+    file {'/etc/init/hadoop-hdfs-zkfc.conf':
+      ensure  => file,
+      content => template('hadoop/services/hadoop-hdfs-zkfc.conf.erb'),
+      mode    => '0644',
+      owner   => root,
+      group   => root,
+    }
+
     service { $hadoop::daemons['hdfs-zkfc']:
       ensure    => 'running',
       enable    => true,
+      require   => File[$hadoop::hdfs_log_dir],
       subscribe => [File['core-site.xml'], File['hdfs-site.xml']],
     }
 

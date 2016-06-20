@@ -14,20 +14,13 @@ class hadoop::namenode::service {
     group   => root,
   }
 
-  # HDP packages don't create log or run dirs
-  file { $hadoop::hdfs_log_dir:
-    ensure => directory,
-    mode   => '0644',
-    owner  => $hadoop::hdfs_user,
-    group  => 'hadoop',
-  }
-
   # don't launch namenode(s) during the first "stage" (requires formatting
   # which requires journal nodes)
   if $hadoop::zookeeper_deployed {
     service { $hadoop::daemons['namenode']:
       ensure    => 'running',
       enable    => true,
+      require   => File[$hadoop::hdfs_log_dir],
       subscribe => [File['core-site.xml'], File['hdfs-site.xml']],
     }
   } else {
