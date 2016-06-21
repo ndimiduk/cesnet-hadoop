@@ -379,6 +379,21 @@ DEFAULT
       'yarn.resourcemanager.ha.rm-ids' => 'rm1,rm2',
       'yarn.resourcemanager.hostname.rm1' => $yarn_hostname,
       'yarn.resourcemanager.hostname.rm2' => $yarn_hostname2,
+      # TODO: is all this really necessary? These two guides disagree on the
+      # minimal set of required configs, but they both agree that I should
+      # have to explicitly specify all these addresses.
+      # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.3.0/bk_hadoop-ha/content/ha-rm-config-failover.html
+      # https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html
+      'yarn.resourcemanager.scheduler.address.rm1' => "${yarn_hostname}:8030",
+      'yarn.resourcemanager.scheduler.address.rm2' => "${yarn_hostname2}:8030",
+      'yarn.resourcemanager.resource-tracker.address.rm1' => "${yarn_hostname}:8031",
+      'yarn.resourcemanager.resource-tracker.address.rm2' => "${yarn_hostname2}:8031",
+      'yarn.resourcemanager.address.rm1' => "${yarn_hostname}:8032",
+      'yarn.resourcemanager.address.rm2' => "${yarn_hostname2}:8032",
+      'yarn.resourcemanager.admin.address.rm1' => "${yarn_hostname}:8033",
+      'yarn.resourcemanager.admin.address.rm2' => "${yarn_hostname2}:8033",
+      'yarn.resourcemanager.webapp.address.rm1' => "${yarn_hostname}:8088",
+      'yarn.resourcemanager.webapp.address.rm2' => "${yarn_hostname2}:8088",
     }
   } else {
     $ha_yarn_properties = undef
