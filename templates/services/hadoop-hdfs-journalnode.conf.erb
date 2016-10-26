@@ -12,8 +12,8 @@ respawn limit 5 60
 
 kill timeout 300
 
-# actually start namenode
-pre-start exec sudo -u <%= scope.lookupvar('hadoop::hdfs_user') %> /bin/bash /usr/hdp/current/hadoop-hdfs-namenode/../hadoop/sbin/hadoop-daemon.sh --config <%= scope.lookupvar('hadoop::confdir') %> start journalnode
+# actually start journalnode
+pre-start exec sudo bash -c "ulimit -n 32768 && sudo -u <%= scope.lookupvar('hadoop::hdfs_user') %> /bin/bash /usr/hdp/current/hadoop-hdfs-namenode/../hadoop/sbin/hadoop-daemon.sh --config <%= scope.lookupvar('hadoop::confdir') %> start journalnode"
 
 #
 # upstart executes this script. If this script exits, upstart respawns the service
