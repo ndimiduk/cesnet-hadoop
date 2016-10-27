@@ -7,9 +7,16 @@ class hadoop::common::hdfs::daemon {
   # HDP packages don't create log or run dirs
   file { $hadoop::hdfs_log_dir:
     ensure => directory,
-    mode   => '0644',
     owner  => $hadoop::hdfs_user,
     group  => 'hadoop',
+    mode   => '0644',
+  }
+
+  file { $hadoop::hdfs_pid_dir:
+    ensure => directory,
+    owner  => $hadoop::hdfs_user,
+    group  => 'hadoop',
+    mode   => '0755',
   }
 
   if $hadoop::https {

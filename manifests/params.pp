@@ -283,4 +283,9 @@ $PWD/mr-framework/hadoop/share/hadoop/hdfs/lib/*:/usr/hdp/${hdp.version}/hadoop/
   $hdfs_log_dir = "${_log_base}/${hdfs_user}"
   $yarn_log_dir = "${_log_base}/${yarn_user}"
   $mapred_log_dir = "${_log_base}/${mapreduce_user}"
+
+  $_pid_base = '/var/run/hadoop'
+  $hdfs_pid_dir = "${_pid_base}/${hdfs_user}"
+  $yarn_pid_dir = "${_pid_base}/${yarn_user}"
+  $mapred_pid_dir = "${_pid_base}/${mapreduce_user}"
 }

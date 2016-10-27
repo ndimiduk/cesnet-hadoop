@@ -7,9 +7,16 @@ class hadoop::common::yarn::daemon {
   # HDP packages don't create log or run dirs
   file { $hadoop::yarn_log_dir:
     ensure => directory,
-    mode   => '0644',
     owner  => $hadoop::yarn_user,
     group  => 'hadoop',
+    mode   => '0644',
+  }
+
+  file { $hadoop::yarn_pid_dir:
+    ensure => directory,
+    owner  => $hadoop::yarn_user,
+    group  => 'hadoop',
+    mode   => '0755',
   }
 
   if $hadoop::https {

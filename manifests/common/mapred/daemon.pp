@@ -4,12 +4,19 @@
 #
 class hadoop::common::mapred::daemon {
 
- # HDP packages don't create log or run dirs
- file { $hadoop::mapred_log_dir:
+  # HDP packages don't create log or run dirs
+  file { $hadoop::mapred_log_dir:
     ensure => directory,
-    mode   => '0644',
     owner  => $hadoop::mapreduce_user,
     group  => 'hadoop',
+    mode   => '0644',
+  }
+
+  file { $hadoop::mapred_pid_dir:
+    ensure => directory,
+    owner  => $hadoop::mapreduce_user,
+    group  => 'hadoop',
+    mode   => '0755',
   }
 
   hadoop::mkdir { '/hdp':
