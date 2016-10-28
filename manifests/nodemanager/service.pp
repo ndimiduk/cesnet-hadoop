@@ -9,10 +9,16 @@ class hadoop::nodemanager::service {
   # HDP packages don't provide service scripts o.O
   file {'/etc/init/hadoop-yarn-nodemanager.conf':
     ensure  => file,
-    content => template('hadoop/services/hadoop-yarn-nodemanager.conf.erb'),
+    content => epp('hadoop/services/upstart-yarn.conf.epp', {
+      'daemon'  => 'nodemanager',
+      'group'   => 'hadoop',
+      'user'    => $hadoop::yarn_user,
+      'piddir'  => $hadoop::yarn_pid_dir,
+    }),
     mode    => '0644',
     owner   => root,
     group   => root,
+    notify  => Service[$hadoop::daemons['nodemanager']],
   }
 
   if $hadoop::zookeeper_deployed {

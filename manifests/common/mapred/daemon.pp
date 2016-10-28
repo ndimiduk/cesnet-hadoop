@@ -12,13 +12,6 @@ class hadoop::common::mapred::daemon {
     mode   => '0644',
   }
 
-  file { $hadoop::mapred_pid_dir:
-    ensure => directory,
-    owner  => $hadoop::mapreduce_user,
-    group  => 'hadoop',
-    mode   => '0755',
-  }
-
   hadoop::mkdir { '/hdp':
     touchfile => 'mapred-distcache-installed',
     owner     => 'hdfs',

@@ -10,10 +10,16 @@ class hadoop::zkfc::service {
     # HDP packages don't provide service scripts o.O
     file {'/etc/init/hadoop-hdfs-zkfc.conf':
       ensure  => file,
-      content => template('hadoop/services/hadoop-hdfs-zkfc.conf.erb'),
+      content => epp('hadoop/services/upstart-hdfs.conf.epp', {
+        'daemon'  => 'zkfc',
+        'group'   => 'hadoop',
+        'user'    => $hadoop::hdfs_user,
+        'piddir'  => $hadoop::hdfs_pid_dir,
+      }),
       mode    => '0644',
       owner   => root,
       group   => root,
+      notify  => Service[$hadoop::daemons['hdfs-zkfc']],
     }
 
     service { $hadoop::daemons['hdfs-zkfc']:

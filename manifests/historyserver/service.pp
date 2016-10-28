@@ -14,6 +14,7 @@ class hadoop::historyserver::service {
     mode    => '0644',
     owner   => root,
     group   => root,
+    notify  => Service[$hadoop::daemons['historyserver']],
   }
 
   # history server requires working HDFS

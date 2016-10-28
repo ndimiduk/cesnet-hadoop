@@ -6,19 +6,16 @@ class hadoop::datanode::service {
   # HDP packages don't provide service scripts o.O
   file {'/etc/init/hadoop-hdfs-datanode.conf':
     ensure  => file,
-    content => template('hadoop/services/hadoop-hdfs-datanode.conf.erb'),
+    content => epp('hadoop/services/upstart-hdfs.conf.epp', {
+      'daemon'  => 'datanode',
+      'group'   => 'hadoop',
+      'user'    => $hadoop::hdfs_user,
+      'piddir'  => $hadoop::hdfs_pid_dir,
+    }),
     mode    => '0644',
     owner   => root,
     group   => root,
-  }
-
-  if has_key($hadoop::props, 'dfs.domain.socket.path') {
-    file {$::hadoop::hdfs_socketdir:
-      ensure => directory,
-      mode   => '0700',
-      owner  => $hadoop::hdfs_user,
-      group  => 'root',
-    }
+    notify  => Service[$hadoop::daemons['datanode']],
   }
 
   if $hadoop::zookeeper_deployed {

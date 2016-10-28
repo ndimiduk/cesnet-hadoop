@@ -12,13 +12,6 @@ class hadoop::common::hdfs::daemon {
     mode   => '0644',
   }
 
-  file { $hadoop::hdfs_pid_dir:
-    ensure => directory,
-    owner  => $hadoop::hdfs_user,
-    group  => 'hadoop',
-    mode   => '0755',
-  }
-
   if $hadoop::https {
     file { "${hadoop::hdfs_homedir}/hadoop.keytab":
       owner  => 'hdfs',

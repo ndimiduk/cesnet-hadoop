@@ -8,10 +8,16 @@ class hadoop::namenode::service {
   # HDP packages don't provide service scripts o.O
   file {'/etc/init/hadoop-hdfs-namenode.conf':
     ensure  => file,
-    content => template('hadoop/services/hadoop-hdfs-namenode.conf.erb'),
+    content => epp('hadoop/services/upstart-hdfs.conf.epp', {
+      'daemon'  => 'namenode',
+      'group'   => 'hadoop',
+      'user'    => $hadoop::hdfs_user,
+      'piddir'  => $hadoop::hdfs_pid_dir,
+    }),
     mode    => '0644',
     owner   => root,
     group   => root,
+    notify  => Service[$hadoop::daemons['namenode']],
   }
 
   # don't launch namenode(s) during the first "stage" (requires formatting
