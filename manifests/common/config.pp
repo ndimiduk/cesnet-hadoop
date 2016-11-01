@@ -29,10 +29,11 @@ class hadoop::common::config {
 
   $environment = $hadoop::environment
   $env_common = $hadoop::envs['common']
-  augeas{ $env_common:
-    lens    => 'Shellvars.lns',
-    incl    => $env_common,
-    changes => template('hadoop/env/common.augeas.erb'),
+  file { $env_common:
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('hadoop/env/common.erb'),
   }
   #notice(template('hadoop/env/common.augeas.erb'))
 
