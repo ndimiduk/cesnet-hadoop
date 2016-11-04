@@ -120,6 +120,11 @@ export HADOOP_LOG_DIR="<%= scope['hadoop::environment']['HADOOP_LOG_DIR'] %>"
 <% else -%>
 export HADOOP_LOG_DIR="<%= scope['hadoop::log_base'] %>/${USER}"
 <% end -%>
+<% if scope['hadoop::environment']['HADOOP_MAPRED_LOG_DIR'] -%>
+export HADOOP_MAPRED_LOG_DIR="<%= scope['hadoop::environment']['HADOOP_MAPRED_LOG_DIR'] %>"
+<% else -%>
+export HADOOP_MAPRED_LOG_DIR="<%= scope['hadoop::log_base'] %>/${USER}"
+<% end -%>
 
 # Where log files are stored in the secure data environment.
 <% if scope['hadoop::environment']['HADOOP_SECURE_LOG_DIR'] -%>
@@ -148,6 +153,7 @@ export HADOOP_MOVER_OPTS="<%= scope['hadoop::environment']['HADOOP_MOVER_OPTS'] 
 #       the user that will run the hadoop daemons.  Otherwise there is the
 #       potential for a symlink attack.
 export HADOOP_PID_DIR="<%= scope['hadoop::pid_base'] %>/${USER}"
+export HADOOP_MAPRED_PID_DIR="<%= scope['hadoop::pid_base'] %>/${USER}"
 export HADOOP_SECURE_DN_PID_DIR="<%= scope['hadoop::pid_base'] %>/${USER}"
 
 # A string representing this instance of hadoop. $USER by default.
