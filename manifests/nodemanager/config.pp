@@ -14,12 +14,18 @@ class hadoop::nodemanager::config {
   # for templates in env/*
   $krbrefresh = $hadoop::features["krbrefresh"]
 
-  if $hadoop::scratch_dir {
-    file{$hadoop::scratch_dir:
-      ensure => 'directory',
-      mode   => '1777',
-      owner  => 'yarn',
-      group  => 'hadoop',
+  if $hadoop::yarn_scratch_dirs {
+    $_dirs = is_array($hadoop::yarn_scratch_dirs) ? {
+      true    => $hadoop::yarn_scratch_dirs,
+      default => [ $hadoop::yarn_scratch_dirs ],
+    }
+    $_dirs.each | $dir | {
+      file { $dir:
+        ensure => 'directory',
+        mode   => '1777',
+        owner  => 'yarn',
+        group  => 'hadoop',
+      }
     }
   }
 

@@ -49,7 +49,7 @@ class hadoop (
   $nfs_proxy_user = undef,
   $nfs_system_user = $::hadoop::params::nfs_system_user,
   $perform = $::hadoop::params::perform,
-  $scratch_dir = undef,
+  $yarn_scratch_dirs = undef,
 
   $hdfs_deployed = $::hadoop::params::hdfs_deployed,
   $zookeeper_deployed = $::hadoop::params::zookeeper_deployed,
@@ -319,9 +319,13 @@ DEFAULT
     $impala_properties = {}
   }
 
-  if $scratch_dir {
+  if $yarn_scratch_dirs {
+    $_nm_localdirs = is_array($yarn_scratch_dirs) ? {
+      true    => join(map($yarn_scratch_dirs) |$x| { "${x}/\${user.name}/nm-local-dir" }, ','),
+      default => "${yarn_scratch_dirs}/\${user.name}/nm-local-dir",
+    }
     $scratch_properties = {
-      'yarn.nodemanager.local-dirs' => "${scratch_dir}/\${user.name}/nm-local-dir",
+      'yarn.nodemanager.local-dirs' => $_nm_localdirs,
     }
   } else {
     $scratch_properties = {}

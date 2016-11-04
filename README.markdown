@@ -954,9 +954,9 @@ Features enabled:
 * HDFS blocks metadata (*dfs.datanode.hdfs-blocks-metadata.enabled*)
 * Short-circuit reads (*dfs.client.read.shortcircuit*, *dfs.domain.socket.path*)
 
-#####`scratch_dir`
+#####`yarn_scratch_dirs`
 
-Creates and sets directory for local computational data for YARN. Default: undef.
+Creates and sets directories for local computational data for YARN. Default: undef.
 
 Sets also the property *yarn.nodemanager.local-dirs*, suffix */${user.name}/nm-local-dir* is always added.
 
