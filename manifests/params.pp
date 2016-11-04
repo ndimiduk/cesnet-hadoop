@@ -232,6 +232,7 @@ class hadoop::params {
         $HADOOP_MAPRED_HOME/*,$HADOOP_MAPRED_HOME/lib/*,
         $HADOOP_YARN_HOME/*,$HADOOP_YARN_HOME/lib/*
 ',
+        'mapreduce.jobhistory.recovery.store.leveldb.path' => "${mapred_homedir}/jhs",
       }
     }
     default: {
