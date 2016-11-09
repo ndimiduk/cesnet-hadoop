@@ -77,11 +77,16 @@ export HADOOP_DATANODE_OPTS="<%= scope['hadoop::environment']['HADOOP_DATANODE_O
 <% else -%>
 export HADOOP_DATANODE_OPTS="-Dhadoop.security.logger=ERROR,RFAS $HADOOP_DATANODE_OPTS"
 <% end -%>
-
 <% if scope['hadoop::environment']['HADOOP_SECONDARYNAMENODE_OPTS'] -%>
 export HADOOP_SECONDARYNAMENODE_OPTS="<%= scope['hadoop::environment']['HADOOP_SECONDARYNAMENODE_OPTS'] %> ${HADOOP_SECONDARYNAMENODE_OPTS}"
 <% else -%>
 export HADOOP_SECONDARYNAMENODE_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER:-INFO,RFAS} -Dhdfs.audit.logger=${HDFS_AUDIT_LOGGER:-INFO,NullAppender} ${HADOOP_SECONDARYNAMENODE_OPTS}"
+<% end -%>
+<% if scope['hadoop::environment']['HADOOP_JOURNALNODE_OPTS'] -%>
+export HADOOP_JOURNALNODE_OPTS="<%= scope['hadoop::environment']['HADOOP_JOURNALNODE_OPTS'] %> ${HADOOP_JOURNALNODE_OPTS}"
+<% end -%>
+<% if scope['hadoop::environment']['HADOOP_ZKFC_OPTS'] -%>
+export HADOOP_ZKFC_OPTS="<%= scope['hadoop::environment']['HADOOP_ZKFC_OPTS'] %> ${HADOOP_ZKFC_OPTS}"
 <% end -%>
 
 <% if scope['hadoop::environment']['HADOOP_NFS3_OPTS'] -%>
@@ -93,6 +98,9 @@ export HADOOP_NFS3_OPTS="$HADOOP_NFS3_OPTS"
 export HADOOP_PORTMAP_OPTS="<%= scope['hadoop::environment']['HADOOP_PORTMAP_OPTS'] %> $HADOOP_PORTMAP_OPTS"
 <% else -%>
 export HADOOP_PORTMAP_OPTS="-Xmx512m $HADOOP_PORTMAP_OPTS"
+<% end -%>
+<% if scope['hadoop::environment']['HADOOP_JOB_HISTORYSERVER_OPTS'] -%>
+export HADOOP_JOB_HISTORYSERVER_OPTS="<%= scope['hadoop::environment']['HADOOP_JOB_HISTORYSERVER_OPTS'] %> ${HADOOP_JOB_HISTORYSERVER_OPTS}"
 <% end -%>
 
 # The following applies to multiple commands (fs, dfs, fsck, distcp etc)
