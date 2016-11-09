@@ -20,8 +20,8 @@ pre-start script
   chmod 0755 <%= $piddir %>
 <% if has_key($hadoop::props, 'dfs.domain.socket.path') { -%>
   mkdir -p <%= "${hadoop::hdfs_socketdir}" %>
-  chown <%= $user %>:root <%= "${hadoop::hdfs_socketdir}" %>
-  chmod 0700 <%= "${hadoop::hdfs_socketdir}" %>
+  chown <%= $user %>:hadoop <%= "${hadoop::hdfs_socketdir}" %>
+  chmod 0750 <%= "${hadoop::hdfs_socketdir}" %>
 <% } -%>
 
   ulimit -n 32768 && sudo -u <%= $user %> /bin/bash /usr/hdp/current/hadoop-hdfs-<%= $daemon ? { 'zkfc' => 'namenode', default => $daemon } %>/../hadoop/sbin/hadoop-daemon.sh --config <%= "${hadoop::confdir}" %> start <%= $daemon %>
