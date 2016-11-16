@@ -12,6 +12,8 @@ class hadoop::common::mapred::daemon {
     mode   => '0644',
   }
 
+  hadoop::kinit { 'mapred-distcache-installed': }
+  ->
   hadoop::mkdir { '/hdp':
     touchfile => 'mapred-distcache-installed',
     owner     => 'hdfs',
@@ -33,6 +35,10 @@ class hadoop::common::mapred::daemon {
     owner     => 'hdfs',
     group     => 'hadoop',
     mode      => '444',
+  }
+  ->
+  hadoop::kdestroy { 'mapred-distcache-installed':
+    touch => true,
   }
 
   if $hadoop::https {
