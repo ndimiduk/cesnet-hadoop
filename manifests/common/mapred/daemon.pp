@@ -31,7 +31,7 @@ class hadoop::common::mapred::daemon {
   ->
   hadoop::put { "/hdp/apps/${hadoop::properties['hdp.version']}/mapreduce/mapreduce.tar.gz":
     touchfile => 'mapred-distcache-installed',
-    source    => '/usr/hdp/current/hadoop-client/mapreduce.tar.gz',
+    source    => "/usr/hdp/${hadoop::properties['hdp.version']}/hadoop/mapreduce.tar.gz",
     owner     => 'hdfs',
     group     => 'hadoop',
     mode      => '444',
