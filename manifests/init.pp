@@ -170,7 +170,7 @@ class hadoop (
     'yarn.resourcemanager.nodes.exclude-path' => "${hadoop::confdir}/excludes",
     'mapreduce.framework.name' => 'yarn',
     'mapreduce.jobhistory.address' => "${hs_hostname}:10020",
-    'mapreduce.jobhistory.webapps.address' => "${hs_hostname}:19888",
+    'mapreduce.jobhistory.webapp.address' => "${hs_hostname}:19888",
     'mapreduce.task.tmp.dir' => '/var/cache/hadoop-mapreduce/${user.name}/tasks',
   }
   if $hadoop::realm and $hadoop::realm != '' {
